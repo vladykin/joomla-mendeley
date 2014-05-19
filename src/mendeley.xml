@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension version="3.1" type="plugin" group="content" method="upgrade">
+
+<name>Content - Mendeley</name>
+<author>Alexey Vladykin</author>
+<creationDate>May 2014</creationDate>
+<license>GNU General Public License version 2 or later; see LICENSE</license>
+<version>1.0.0</version>
+<description>Include Mendeley bibliographies into Joomla articles.</description>
+
+<files>
+    <filename plugin="mendeley">mendeley.php</filename>
+    <filename>index.html</filename>
+    <folder>lib</folder>
+    <folder>sql</folder>
+</files>
+
+<install>
+    <sql>
+        <file driver="mysql" charset="utf8">sql/mysql/install.mysql.utf8.sql</file>
+    </sql>
+</install>
+
+<uninstall>
+    <sql>
+        <file driver="mysql" charset="utf8">sql/mysql/uninstall.mysql.utf8.sql</file>
+    </sql>
+</uninstall>
+ 
+<update> 
+    <schemas>
+        <schemapath type="mysql">sql/mysql/updates</schemapath> 
+    </schemas> 
+</update>
+
+<config>
+    <fields name="params">
+        <fieldset name="basic">
+            <field name="client_id" type="text"
+                    description="Client ID assigned by Mendeley"
+                    label="Client ID"
+                    size="5"/>
+
+            <field name="client_secret" type="text"
+                    label="Client Secret"
+                    description="Client Secret assigned by Mendeley"
+                    size="40"/>
+
+            <field name="redirect_uri" type="text"
+                    label="Redirect URI"
+                    description="Redirect URI assigned by Mendeley"
+                    size="40"/>
+        </fieldset>
+    </fields>
+</config>
+
+</extension>
