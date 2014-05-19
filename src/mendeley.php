@@ -2,12 +2,13 @@
 // no direct access
 defined('_JEXEC') or die('Restricted access');
 
+jimport('joomla.log.log');
+
 require_once('lib/Mendeley.php');
 
 class PlgContentMendeley extends JPlugin {
 
     public function onContentPrepare($context, &$row, &$params, $page = 0) {
-        restore_exception_handler();
         $row->text = $this->replaceMendeleyTags($row->text);
     }
 
@@ -19,13 +20,22 @@ class PlgContentMendeley extends JPlugin {
     }
 
     private function getMendeleyBib($mendeley_user) {
-        $items = $this->fetchMendeleyDocs($mendeley_user);
-        $result = '<ol>';
-        foreach ($items as $item) {
-            $result .= '<li>'. $this->formatBibItem($item) . '</li>';
+        try {
+            $items = $this->fetchMendeleyDocs($mendeley_user);
+            $result = '<ol>';
+            foreach ($items as $item) {
+                $result .= '<li>'. $this->formatBibItem($item) . '</li>';
+            }
+            $result .= '</ol>';
+            return $result;
+        } catch (Exception $e) {
+            JLog::addLogger(
+                    array('text_file' => 'mendeley.errors.php'),
+                    JLog::ALL,
+                    'mendeley');
+            JLog::add($e->getMessage(), JLog::ERROR, 'mendeley');
+            return 'Failed to insert Mendeley bibliography';
         }
-        $result .= '</ol>';
-        return $result;
     }
 
     private function formatBibItem($item) {
@@ -34,7 +44,7 @@ class PlgContentMendeley extends JPlugin {
             $result .= $author->surname . ' ' . $author->forename . ', ';
         }
         $result .= $item->title . ' / ' . $item->published_in . ' (' . $item->year . ') С. ' . $item->pages;
-        $result .= "\n" . htmlspecialchars(json_encode($item)); 
+        $result .= "\n" . htmlspecialchars(json_encode($item));
         return $result;
     }
 
