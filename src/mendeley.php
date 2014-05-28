@@ -21,10 +21,11 @@ class PlgContentMendeley extends JPlugin {
 
     private function getMendeleyBib($mendeley_user) {
         try {
-            $items = $this->fetchMendeleyDocs($mendeley_user);
+            $docs = $this->fetchMendeleyDocs($mendeley_user);
+            $formatter = new \mendeley\DocFormatter();
             $result = '<ol>';
-            foreach ($items as $item) {
-                $result .= '<li>'. $this->formatBibItem($item) . '</li>';
+            foreach ($docs as $doc) {
+                $result .= '<li>'. htmlspecialchars($formatter->format($doc)) . '</li>';
             }
             $result .= '</ol>';
             return $result;
@@ -36,16 +37,6 @@ class PlgContentMendeley extends JPlugin {
             JLog::add($e->getMessage(), JLog::ERROR, 'mendeley');
             return 'Failed to insert Mendeley bibliography';
         }
-    }
-
-    private function formatBibItem($item) {
-        $result = '';
-        foreach ($item->authors as $author) {
-            $result .= $author->surname . ' ' . $author->forename . ', ';
-        }
-        $result .= $item->title . ' / ' . $item->published_in . ' (' . $item->year . ') С. ' . $item->pages;
-        $result .= "\n" . htmlspecialchars(json_encode($item));
-        return $result;
     }
 
     private function fetchMendeleyDocs($user) {

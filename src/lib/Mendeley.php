@@ -153,4 +153,75 @@ class HTTP {
     }
 }
 
+class DocFormatter {
+
+    private $buffer;
+
+    protected function reset() {
+        $this->buffer = '';
+        return $this;
+    }
+
+    protected function append($data, $delimiters = array()) {
+        if (is_array($data)) {
+            $data = array_filter($data);
+        }
+        if ($data) {
+            if ($before = $delimiters['before']) {
+                $this->buffer .= $before;
+            }
+            $this->buffer .= is_array($data)
+                    ? implode($delimiters['inside'], $data)
+                    : $data;
+            if ($after = $delimiters['after']) {
+                $this->buffer .= $after;
+            }
+        }
+        return $this;
+    }
+
+    protected function toString() {
+        return $this->buffer;
+    }
+
+    public function format($doc) {
+        return $this->reset()
+            ->append($this->formatAuthors($doc->authors), array('after' => ' '))
+            ->append($doc->title)
+            ->append($doc->published_in, array('before' => ' // '))
+            ->append($doc->issue, array('before' => ', Вып. '))
+            ->append($doc->volume, array('before' => ', T. '))
+            ->append(array($doc->city, $doc->publisher), array('before' => ' — ', 'inside' => ': '))
+            ->append($doc->year, array('before' => ', ', 'after' => '.'))
+            ->append($doc->pages, array('before' => ' С. ', 'after' => '.'))
+            ->toString();
+    }
+
+    protected function formatAuthors($authors) {
+        $result = array();
+        foreach ($authors as $author) {
+            $result[] = $this->formatAuthor($author);
+        }
+        return implode(', ', $result);
+    }
+
+    protected function formatAuthor($author) {
+        $initials = $this->getInitials($author->forename);
+        $surname = $author->surname;
+        return $surname . ' ' . $initials;
+    }
+
+    protected function getInitials($name) {
+        $names = explode(' ', $name);
+        $initials = array_map(
+                function($s) {
+                    return mb_substr($s, -1) == '.'
+                           ? $s
+                           : mb_substr($s, 0, 1) . '.'; 
+                },
+                $names);
+        return implode(' ', $initials);
+    }
+}
+
 ?>
