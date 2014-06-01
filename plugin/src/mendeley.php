@@ -30,7 +30,7 @@ class PlgContentMendeley extends JPlugin {
             return $result;
         } catch (Exception $e) {
             JLog::addLogger(
-                    array('text_file' => 'mendeley.errors.php'),
+                    ['text_file' => 'mendeley.errors.php'],
                     JLog::ALL,
                     'mendeley');
             JLog::add($e->getMessage(), JLog::ERROR, 'mendeley');
@@ -39,7 +39,7 @@ class PlgContentMendeley extends JPlugin {
     }
 
     private function fetchMendeleyDocs($user) {
-        $result = array();
+        $result = [];
         $accesToken = $this->getAccessToken($user);
         $m = new \mendeley\Session($accesToken);
         $docs = $m->get('library/documents/authored');
@@ -54,7 +54,7 @@ class PlgContentMendeley extends JPlugin {
         $query = $db->getQuery(true)
                 ->select('details')
                 ->from('#__mendeley_docs')
-                ->where(array('doc_id = ' . $db->quote($doc_id), 'version = ' . $doc_version));
+                ->where(['doc_id = ' . $db->quote($doc_id), 'version = ' . $doc_version]);
         $db->setQuery($query);
         $doc = $db->loadResult();
         if ($doc) {
@@ -63,7 +63,7 @@ class PlgContentMendeley extends JPlugin {
             $doc = $m->get('library/documents/' . $doc_id);
             $query = $db->getQuery(true)
                     ->insert('#__mendeley_docs')
-                    ->columns(array('doc_id', 'version', 'details'))
+                    ->columns(['doc_id', 'version', 'details'])
                     ->values($db->quote($doc_id).','.$db->quote($doc_version).','.$db->quote(json_encode($doc)));
             $db->setQuery($query);
             $db->query();
@@ -91,7 +91,7 @@ class PlgContentMendeley extends JPlugin {
     private function loadTokens($user) {
         $db = JFactory::getDbo();
         $query = $db->getQuery(true)
-                ->select(array('access_token', 'refresh_token', 'expire_time'))
+                ->select(['access_token', 'refresh_token', 'expire_time'])
                 ->from('#__mendeley_tokens')
                 ->where('username = ' . $db->quote($user));
         $db->setQuery($query);
@@ -110,10 +110,10 @@ class PlgContentMendeley extends JPlugin {
         $db = JFactory::getDbo();
         $query = $db->getQuery(true)
                 ->update('#__mendeley_tokens')
-                ->set(array(
+                ->set([
                         'access_token = ' . $db->quote($tokens->getAccessToken()),
                         'refresh_token = ' . $db->quote($tokens->getRefreshToken()),
-                        'expire_time = ' . $db->quote($tokens->getExpireTime())))
+                        'expire_time = ' . $db->quote($tokens->getExpireTime())])
                 ->where('username = ' . $db->quote($user));
         $db->setQuery($query);
         $db->query();

@@ -56,26 +56,26 @@ class OAuth {
     }
 
     public function exchangeAuthCodeForAccessToken($authCode) {
-        $response = HTTP::post(self::TOKEN_ENDPOINT, array(
+        $response = HTTP::post(self::TOKEN_ENDPOINT, [
                 'grant_type' => 'authorization_code',
                 'code' => $authCode,
                 'redirect_uri' => $this->redirectURI,
                 'client_id' => $this->clientID,
-                'client_secret' => $this->clientSecret));
+                'client_secret' => $this->clientSecret]);
         return self::decodeTokens($response);
     }
 
     public function refreshAccessToken($refreshToken) {
-        $response = HTTP::post(self::TOKEN_ENDPOINT, array(
+        $response = HTTP::post(self::TOKEN_ENDPOINT, [
                 'grant_type' => 'refresh_token',
                 'refresh_token' => $refreshToken,
                 'redirect_uri' => $this->redirectURI,
                 'client_id' => $this->clientID,
-                'client_secret' => $this->clientSecret));
+                'client_secret' => $this->clientSecret]);
         return self::decodeTokens($response);
     }
 
-    public function getFreshTokens($currentTokens, $gap = 10) {
+    public function getFreshTokens(Tokens $currentTokens, $gap = 10) {
         if ($currentTokens->isAccessTokenExpired($gap)) {
             return self::refreshAccessToken($currentTokens->getRefreshToken());
         } else {
@@ -105,7 +105,7 @@ class Session {
 
     public function get($resource) {
         $response = HTTP::get(self::API_ENDPOINT_BASE . $resource,
-                array('Authorization: Bearer ' . $this->accessToken));
+                ['Authorization: Bearer ' . $this->accessToken]);
         return json_decode($response);
     }
 }
@@ -113,7 +113,7 @@ class Session {
 
 class HTTP {
 
-    public static function get($url, $headers = null) {
+    public static function get($url, array $headers = null) {
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
@@ -128,7 +128,7 @@ class HTTP {
         return $response;
     }
 
-    public static function post($url, $post_parms = null) {
+    public static function post($url, array $post_parms = null) {
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_POST, true);
@@ -144,7 +144,7 @@ class HTTP {
         return $response;
     }
 
-    private static function params_string($parms) {
+    private static function params_string(array $parms) {
         $result = '';
         foreach ($parms as $key => $value) {
             $result .= $key . '=' . urlencode($value) . '&';
@@ -162,7 +162,7 @@ class DocFormatter {
         return $this;
     }
 
-    protected function append($data, $delimiters = array()) {
+    protected function append($data, $delimiters = []) {
         if (is_array($data)) {
             $data = array_filter($data);
         }
@@ -186,19 +186,19 @@ class DocFormatter {
 
     public function format($doc) {
         return $this->reset()
-            ->append($this->formatAuthors($doc->authors), array('after' => ' '))
+            ->append($this->formatAuthors($doc->authors), ['after' => ' '])
             ->append($doc->title)
-            ->append($doc->published_in, array('before' => ' // '))
-            ->append($doc->issue, array('before' => ', Вып. '))
-            ->append($doc->volume, array('before' => ', T. '))
-            ->append(array($doc->city, $doc->publisher), array('before' => ' — ', 'inside' => ': '))
-            ->append($doc->year, array('before' => ', ', 'after' => '.'))
-            ->append($doc->pages, array('before' => ' С. ', 'after' => '.'))
+            ->append($doc->published_in, ['before' => ' // '])
+            ->append($doc->issue, ['before' => ', Вып. '])
+            ->append($doc->volume, ['before' => ', T. '])
+            ->append([$doc->city, $doc->publisher], ['before' => ' — ', 'inside' => ': '])
+            ->append($doc->year, ['before' => ', ', 'after' => '.'])
+            ->append($doc->pages, ['before' => ' С. ', 'after' => '.'])
             ->toString();
     }
 
-    protected function formatAuthors($authors) {
-        $result = array();
+    protected function formatAuthors(array $authors) {
+        $result = [];
         foreach ($authors as $author) {
             $result[] = $this->formatAuthor($author);
         }
