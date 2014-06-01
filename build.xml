@@ -2,10 +2,15 @@
 <project name="joomla-mendeley" default="dist">
 
     <target name="dist" depends="plugin-dist">
+        <mkdir dir="target"/>
+        <zip destfile="target/pkg_mendeley.zip">
+            <fileset dir="." includes="pkg_mendeley.xml"/>
+            <fileset dir="plugin/target" includes="*.zip"/>
+        </zip>
     </target>
 
     <target name="plugin-dist">
-         <phing dir="plugin" target="dist"/>
+        <phing dir="plugin" target="dist"/>
     </target>
 
 </project>

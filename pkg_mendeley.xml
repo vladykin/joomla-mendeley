@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<extension type="package" version="3.3">
+    <name>Mendeley Integration Package</name>
+    <packagename>mendeley</packagename>
+    <version>0.0.1</version>
+    <files>
+        <file type="plugin" id="mendeley" group="content">plg_mendeley.zip</file>
+    </files>
+</extension>

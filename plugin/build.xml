@@ -3,7 +3,7 @@
 
     <target name="dist" depends="static-checks">
         <mkdir dir="target"/>
-        <zip destfile="target/mendeley-plugin.zip" basedir="src"/>
+        <zip destfile="target/plg_mendeley.zip" basedir="src"/>
     </target>
 
     <target name="static-checks">
