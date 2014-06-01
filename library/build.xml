@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="joomla-mendeley-library" default="dist">
+
+    <target name="dist" depends="static-checks">
+        <mkdir dir="target"/>
+        <zip destfile="target/lib_mendeley.zip" basedir="src"/>
+    </target>
+
+    <target name="static-checks">
+        <phplint deprecatedAsError="true" haltonfailure="true">
+            <fileset dir="src">
+                <include name="**/*.php"/>
+            </fileset>
+        </phplint>
+    </target>
+
+    <target name="clean">
+        <delete dir="target"/>
+    </target>
+
+</project>

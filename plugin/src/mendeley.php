@@ -3,8 +3,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.log.log');
-
-require_once('lib/Mendeley.php');
+jimport('mendeley.mendeley');
 
 class PlgContentMendeley extends JPlugin {
 

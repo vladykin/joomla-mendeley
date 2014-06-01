@@ -1,21 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="joomla-mendeley" default="dist">
 
-    <target name="dist" depends="component-dist, plugin-dist">
+    <target name="dist">
+        <phing dir="library" target="dist"/>
+        <phing dir="component" target="dist"/>
+        <phing dir="plugin" target="dist"/>
         <mkdir dir="target"/>
         <zip destfile="target/pkg_mendeley.zip">
             <fileset dir="." includes="pkg_mendeley.xml"/>
+            <fileset dir="library/target" includes="*.zip"/>
             <fileset dir="component/target" includes="*.zip"/>
             <fileset dir="plugin/target" includes="*.zip"/>
         </zip>
     </target>
 
-    <target name="component-dist">
-        <phing dir="component" target="dist"/>
-    </target>
-
-    <target name="plugin-dist">
-        <phing dir="plugin" target="dist"/>
+    <target name="clean">
+        <delete dir="target"/>
+        <phing dir="library" target="clean"/>
+        <phing dir="component" target="clean"/>
+        <phing dir="plugin" target="clean"/>
     </target>
 
 </project>

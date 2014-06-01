@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="library" method="upgrade" version="3.3">
+
+    <name>Mendeley Library</name>
+    <libraryname>mendeley</libraryname>
+    <version>0.0.1</version>
+
+    <files>
+        <file>mendeley.php</file>
+    </files>
+
+</extension>
