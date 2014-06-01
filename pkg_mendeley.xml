@@ -4,6 +4,7 @@
     <packagename>mendeley</packagename>
     <version>0.0.1</version>
     <files>
+        <file type="component" id="mendeley">com_mendeley.zip</file>
         <file type="plugin" id="mendeley" group="content">plg_mendeley.zip</file>
     </files>
 </extension>

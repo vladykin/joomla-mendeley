@@ -1,12 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="joomla-mendeley" default="dist">
 
-    <target name="dist" depends="plugin-dist">
+    <target name="dist" depends="component-dist, plugin-dist">
         <mkdir dir="target"/>
         <zip destfile="target/pkg_mendeley.zip">
             <fileset dir="." includes="pkg_mendeley.xml"/>
+            <fileset dir="component/target" includes="*.zip"/>
             <fileset dir="plugin/target" includes="*.zip"/>
         </zip>
+    </target>
+
+    <target name="component-dist">
+        <phing dir="component" target="dist"/>
     </target>
 
     <target name="plugin-dist">
