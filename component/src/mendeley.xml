@@ -14,7 +14,10 @@
         <files folder="admin">
             <filename>index.html</filename>
             <filename>mendeley.php</filename>
+            <filename>controller.php</filename>
+            <filename>config.xml</filename>
+            <folder>views</folder>
         </files>
     </administration>
- 
+
 </extension>

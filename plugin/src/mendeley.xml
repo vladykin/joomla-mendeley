@@ -33,25 +33,4 @@
     </schemas> 
 </update>
 
-<config>
-    <fields name="params">
-        <fieldset name="basic">
-            <field name="client_id" type="text"
-                    description="Client ID assigned by Mendeley"
-                    label="Client ID"
-                    size="5"/>
-
-            <field name="client_secret" type="text"
-                    label="Client Secret"
-                    description="Client Secret assigned by Mendeley"
-                    size="40"/>
-
-            <field name="redirect_uri" type="text"
-                    label="Redirect URI"
-                    description="Redirect URI assigned by Mendeley"
-                    size="40"/>
-        </fieldset>
-    </fields>
-</config>
-
 </extension>

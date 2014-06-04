@@ -2,4 +2,8 @@
 
 defined('_JEXEC') or die;
 
-echo('Hello world!');
+$input = JFactory::getApplication()->input;
+$task = $input->getCmd('task');
+
+$controller = JControllerLegacy::getInstance('Mendeley');
+$controller->execute($task);

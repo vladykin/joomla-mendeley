@@ -74,10 +74,11 @@ class PlgContentMendeley extends JPlugin {
     private function getAccessToken($user) {
         $oldTokens = $this->loadTokens($user);
         if ($oldTokens) {
+            $params = JComponentHelper::getParams('com_mendeley');
             $mauth = new \mendeley\OAuth(
-                    $this->params->get('client_id'),
-                    $this->params->get('client_secret'),
-                    $this->params->get('redirect_uri'));
+                    $params->get('client_id'),
+                    $params->get('client_secret'),
+                    $params->get('redirect_uri'));
             $newTokens = $mauth->getFreshTokens($oldTokens);
             if ($newTokens != $oldTokens) {
                 $this->saveTokens($user, $newTokens);

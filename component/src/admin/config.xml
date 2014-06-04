@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<config>
+    <fieldset name="oauth">
+        <field name="client_id" type="text"
+                description="Client ID assigned by Mendeley"
+                label="Client ID"/>
+
+        <field name="client_secret" type="text"
+                label="Client Secret"
+                description="Client Secret assigned by Mendeley"/>
+
+        <field name="redirect_uri" type="text"
+                label="Redirect URI"
+                description="Redirect URI assigned by Mendeley"/>
+    </fieldset>
+</config>
