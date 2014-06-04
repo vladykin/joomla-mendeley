@@ -2,7 +2,7 @@
 <extension type="component" version="3.3" method="upgrade">
  
     <name>Mendeley</name>
-    <version>0.0.1</version>
+    <version>1.0.0</version>
 
     <files folder="site">
         <filename>index.html</filename>
@@ -17,7 +17,26 @@
             <filename>controller.php</filename>
             <filename>config.xml</filename>
             <folder>views</folder>
+            <folder>sql</folder>
         </files>
     </administration>
+
+    <install>
+        <sql>
+            <file driver="mysql" charset="utf8">sql/mysql/install.mysql.utf8.sql</file>
+        </sql>
+    </install>
+
+    <uninstall>
+        <sql>
+            <file driver="mysql" charset="utf8">sql/mysql/uninstall.mysql.utf8.sql</file>
+        </sql>
+    </uninstall>
+     
+    <update> 
+        <schemas>
+            <schemapath type="mysql">sql/mysql/updates</schemapath> 
+        </schemas> 
+    </update>
 
 </extension>
