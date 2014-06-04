@@ -123,7 +123,7 @@ class HTTP {
         $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         curl_close($ch);
         if ($http_code != 200) {
-            throw new \Exception('HTTP error ' . $http_code . "\n" . strip_tags($response));
+            throw new \Exception("$url\n\tHTTP error $http_code\n\t" . strip_tags($response));
         }
         return $response;
     }
@@ -139,7 +139,7 @@ class HTTP {
         $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         curl_close($ch);
         if ($http_code != 200) {
-            throw new \Exception('HTTP error ' . $http_code . "\n" . strip_tags($response));
+            throw new \Exception("$url\n\tHTTP error $http_code\n\t" . strip_tags($response));
         }
         return $response;
     }
