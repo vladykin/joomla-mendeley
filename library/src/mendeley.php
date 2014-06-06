@@ -108,10 +108,31 @@ class Session {
                 ['Authorization: Bearer ' . $this->accessToken]);
         return json_decode($response);
     }
+
+    public function downloadFile($docId, $fileHash, $destFile) {
+        HTTP::downloadFile(self::API_ENDPOINT_BASE . 'library/documents/' . $docId . '/file/' . $fileHash,
+                $destFile,
+                ['Authorization: Bearer ' . $this->accessToken]);
+    }
 }
 
 
 class HTTP {
+
+    public static function downloadFile($url, $destFile, array $headers = null) {
+        $fd = fopen($destFile, "wb");
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($ch, CURLOPT_FILE, $fd);
+        curl_exec($ch);
+        $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        curl_close($ch);
+        fclose($fd);
+        if ($http_code != 200) {
+            throw new \Exception("$url\n\tHTTP error $http_code");
+        }
+    }
 
     public static function get($url, array $headers = null) {
         $ch = curl_init();

@@ -25,7 +25,7 @@ class PlgContentMendeley extends JPlugin {
             $formatter = new \mendeley\DocFormatter();
             $result = '<ol>';
             foreach ($docs as $doc) {
-                $result .= '<li>'. htmlspecialchars($formatter->format($doc)) . '</li>';
+                $result .= '<li>'. $this->formatDoc($doc, $formatter, $mendeley_user) . '</li>';
             }
             $result .= '</ol>';
             return $result;
@@ -37,6 +37,14 @@ class PlgContentMendeley extends JPlugin {
             JLog::add($e->getMessage(), JLog::ERROR, 'mendeley');
             return 'Failed to insert Mendeley bibliography';
         }
+    }
+
+    private function formatDoc($doc, \mendeley\DocFormatter $formatter, $user) {
+        $item = htmlspecialchars($formatter->format($doc));
+        foreach ($doc->files as $file) {
+            $item .= ' ' . '<a href="' . JURI::base(true) .'/index.php?option=com_mendeley&amp;user=' . $user . '&amp;doc=' . $doc->id . '&amp;file=' . $file->file_hash . '&amp;format=raw">' . $file->file_extension . '</a>';
+        }
+        return $item;
     }
 
     private function fetchMendeleyDocs($user) {
