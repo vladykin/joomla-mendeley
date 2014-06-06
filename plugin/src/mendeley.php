@@ -4,6 +4,7 @@ defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.log.log');
 jimport('mendeley.mendeley');
+jimport('mendeley.tokendb');
 
 class PlgContentMendeley extends JPlugin {
 
@@ -40,7 +41,7 @@ class PlgContentMendeley extends JPlugin {
 
     private function fetchMendeleyDocs($user) {
         $result = [];
-        $accesToken = $this->getAccessToken($user);
+        $accesToken = MendeleyTokenDB::getAccessToken($user);
         $m = new \mendeley\Session($accesToken);
         $docs = $m->get('library/documents/authored');
         foreach ($docs->documents as $doc) {
@@ -70,56 +71,6 @@ class PlgContentMendeley extends JPlugin {
             return $doc;
         }
     }
-
-    private function getAccessToken($user) {
-        $oldTokens = $this->loadTokens($user);
-        if ($oldTokens) {
-            $params = JComponentHelper::getParams('com_mendeley');
-            $mauth = new \mendeley\OAuth(
-                    $params->get('client_id'),
-                    $params->get('client_secret'),
-                    $params->get('redirect_uri'));
-            $newTokens = $mauth->getFreshTokens($oldTokens);
-            if ($newTokens != $oldTokens) {
-                $this->saveTokens($user, $newTokens);
-            }
-            return $newTokens->getAccessToken();
-        } else {
-            throw new Exception('No tokens available for ' . $user);
-        }
-    }
-
-    private function loadTokens($user) {
-        $db = JFactory::getDbo();
-        $query = $db->getQuery(true)
-                ->select(['access_token', 'refresh_token', 'expire_time'])
-                ->from('#__mendeley_tokens')
-                ->where('username = ' . $db->quote($user));
-        $db->setQuery($query);
-        $row = $db->loadAssoc();
-        if ($row) {
-            return new \mendeley\Tokens(
-                    $row['access_token'],
-                    $row['expire_time'],
-                    $row['refresh_token']);
-        } else {
-            return false;
-        }
-    }
-
-    private function saveTokens($user, $tokens) {
-        $db = JFactory::getDbo();
-        $query = $db->getQuery(true)
-                ->update('#__mendeley_tokens')
-                ->set([
-                        'access_token = ' . $db->quote($tokens->getAccessToken()),
-                        'refresh_token = ' . $db->quote($tokens->getRefreshToken()),
-                        'expire_time = ' . $db->quote($tokens->getExpireTime())])
-                ->where('username = ' . $db->quote($user));
-        $db->setQuery($query);
-        $db->query();
-    }
-
 }
 
 ?>
