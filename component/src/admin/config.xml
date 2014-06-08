@@ -12,5 +12,11 @@
         <field name="redirect_uri" type="text"
                 label="Redirect URI"
                 description="Redirect URI assigned by Mendeley"/>
+
+        <field name="storage_folder" type="folderlist"
+                hide_default="true" hide_none="true"
+                exclude="administrator|bin|cli|components|includes|layouts|libraries|logs|modules|plugins|templates"
+                label="Storage folder"
+                description="Folder to store files downloaded from Mendeley"/>
     </fieldset>
 </config>

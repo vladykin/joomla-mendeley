@@ -14,7 +14,8 @@ if ($user && $docId && $fileHash) {
     $accessToken = MendeleyTokenDB::getAccessToken($user);
     $mendeleySession = new \mendeley\Session($accessToken);
 
-    $destFileRel = '/files/' . $docId . '.' . $fileHash . '.pdf';
+    $params = JComponentHelper::getParams('com_mendeley');
+    $destFileRel = '/' . $params->get('storage_folder') . '/' . $docId . '.' . $fileHash . '.pdf';
     $destFileAbs = JPATH_BASE . $destFileRel;
     $mendeleySession->downloadFile($docId, $fileHash, $destFileAbs);
     header('Location: ' . JURI::root(true) . $destFileRel);
