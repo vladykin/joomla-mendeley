@@ -18,6 +18,6 @@ if ($user && $docId && $fileHash) {
     $destFileRel = '/' . $params->get('storage_folder') . '/' . $docId . '.' . $fileHash . '.pdf';
     $destFileAbs = JPATH_BASE . $destFileRel;
     $mendeleySession->downloadFile($docId, $fileHash, $destFileAbs);
-    header('Location: ' . JURI::root(true) . $destFileRel);
+    header('Location: ' . JURI::base(true) . $destFileRel);
     JFactory::getApplication()->close();
 }
