@@ -9,10 +9,11 @@ $input = JFactory::getApplication()->input;
 $user = $input->getWord('user');
 $docId = $input->getUint('doc');
 $fileHash = $input->getAlnum('file');
+$format = $input->getWord('format', 'pdf');
 
 if ($user && $docId && $fileHash) {
     $params = JComponentHelper::getParams('com_mendeley');
-    $destFileRel = '/' . $params->get('storage_folder') . '/' . $docId . '.' . $fileHash . '.pdf';
+    $destFileRel = '/' . $params->get('storage_folder') . '/' . $docId . '.' . $fileHash . '.' . $format;
     $destFileAbs = JPATH_BASE . $destFileRel;
     if (!file_exists($destFileAbs)) {
         $accessToken = MendeleyTokenDB::getAccessToken($user);
