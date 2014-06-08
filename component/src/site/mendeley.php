@@ -6,9 +6,9 @@ jimport('mendeley.mendeley');
 jimport('mendeley.tokendb');
 
 $input = JFactory::getApplication()->input;
-$user = $input->get('user');
-$docId = $input->get('doc');
-$fileHash = $input->get('file');
+$user = $input->getWord('user');
+$docId = $input->getUint('doc');
+$fileHash = $input->getAlnum('file');
 
 if ($user && $docId && $fileHash) {
     $accessToken = MendeleyTokenDB::getAccessToken($user);
