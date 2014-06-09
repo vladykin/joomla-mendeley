@@ -39,7 +39,7 @@ class PlgContentMendeley extends JPlugin {
         $item = htmlspecialchars($formatter->format($doc));
         foreach ($doc->files as $file) {
             $item .= ' <a class="btn btn-mini" href="'
-                    . JURI::base(true) .'/index.php?option=com_mendeley&amp;user=' . $user . '&amp;doc=' . $doc->id . '&amp;file=' . $file->file_hash . '&amp;ext=' . $file->file_extension
+                    . JURI::base(true) .'/index.php?option=com_mendeley&amp;user=' . $user . '&amp;doc=' . $doc->id . '&amp;file=' . $file->file_hash . '&amp;type=' . $file->file_extension
                     . '"><span class="icon-download-alt"></span> ' . strtoupper($file->file_extension) . '</a>';
         }
         return $item;
