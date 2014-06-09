@@ -6,6 +6,7 @@
     <version>0.0.1</version>
 
     <files>
+        <file>log.php</file>
         <file>mendeley.php</file>
         <file>tokendb.php</file>
     </files>

@@ -2,24 +2,32 @@
 
 defined('_JEXEC') or die;
 
+jimport('mendeley.log');
 jimport('mendeley.mendeley');
 jimport('mendeley.tokendb');
 
-$input = JFactory::getApplication()->input;
+$app = JFactory::getApplication();
+$input = $app->input;
 $user = $input->getWord('user');
 $docId = $input->getUint('doc');
 $fileHash = $input->getAlnum('file');
-$format = $input->getWord('format', 'pdf');
+$type = $input->getWord('type', 'pdf');
 
 if ($user && $docId && $fileHash) {
     $params = JComponentHelper::getParams('com_mendeley');
-    $destFileRel = '/' . $params->get('storage_folder') . '/' . $docId . '.' . $fileHash . '.' . $format;
+    $destFileRel = '/' . $params->get('storage_folder') . '/' . $docId . '.' . $fileHash . '.' . $type;
     $destFileAbs = JPATH_BASE . $destFileRel;
-    if (!file_exists($destFileAbs)) {
-        $accessToken = MendeleyTokenDB::getAccessToken($user);
-        $mendeleySession = new \mendeley\Session($accessToken);
-        $mendeleySession->downloadFile($docId, $fileHash, $destFileAbs);
+    try {
+        if (!file_exists($destFileAbs)) {
+            $accessToken = MendeleyTokenDB::getAccessToken($user);
+            $mendeleySession = new \mendeley\Session($accessToken);
+            $mendeleySession->downloadFile($docId, $fileHash, $destFileAbs);
+        }
+        header('Location: ' . JURI::base(true) . $destFileRel);
+        $app->close();
+    } catch (Exception $e) {
+        MendeleyLog::exception($e);
+        unlink($destFileAbs);
+        JError::raiseError(404, JText::_("File not found"));
     }
-    header('Location: ' . JURI::base(true) . $destFileRel);
-    JFactory::getApplication()->close();
 }

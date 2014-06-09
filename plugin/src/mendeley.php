@@ -2,7 +2,7 @@
 // no direct access
 defined('_JEXEC') or die('Restricted access');
 
-jimport('joomla.log.log');
+jimport('mendeley.log');
 jimport('mendeley.mendeley');
 jimport('mendeley.tokendb');
 
@@ -30,11 +30,7 @@ class PlgContentMendeley extends JPlugin {
             $result .= '</ol>';
             return $result;
         } catch (Exception $e) {
-            JLog::addLogger(
-                    ['text_file' => 'mendeley.errors.php'],
-                    JLog::ALL,
-                    'mendeley');
-            JLog::add($e->getMessage(), JLog::ERROR, 'mendeley');
+            MendeleyLog::exception($e);
             return 'Failed to insert Mendeley bibliography';
         }
     }
@@ -42,7 +38,7 @@ class PlgContentMendeley extends JPlugin {
     private function formatDoc($doc, \mendeley\DocFormatter $formatter, $user) {
         $item = htmlspecialchars($formatter->format($doc));
         foreach ($doc->files as $file) {
-            $item .= ' ' . '<a href="' . JURI::base(true) .'/index.php?option=com_mendeley&amp;user=' . $user . '&amp;doc=' . $doc->id . '&amp;file=' . $file->file_hash . '&amp;format=' . $file->file_extension . '">' . $file->file_extension . '</a>';
+            $item .= ' ' . '<a href="' . JURI::base(true) .'/index.php?option=com_mendeley&amp;user=' . $user . '&amp;doc=' . $doc->id . '&amp;file=' . $file->file_hash . '&amp;ext=' . $file->file_extension . '">' . $file->file_extension . '</a>';
         }
         return $item;
     }
