@@ -1,6 +1,6 @@
 <?php
 
-defined('_JEXEC') or die;
+defined('_JEXEC') or die('Restricted access');
 
 $input = JFactory::getApplication()->input;
 $task = $input->getCmd('task');
