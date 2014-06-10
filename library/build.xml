@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="joomla-mendeley-library" default="dist">
 
-    <target name="dist" depends="static-checks">
+    <target name="dist" depends="static-checks, test">
         <mkdir dir="target"/>
         <zip destfile="target/lib_mendeley.zip" basedir="src"/>
     </target>
@@ -12,6 +12,17 @@
                 <include name="**/*.php"/>
             </fileset>
         </phplint>
+    </target>
+
+    <target name="test">
+        <phpunit haltonfailure="true" haltonerror="true" printsummary="true"
+                bootstrap="src/mendeley.php">
+            <batchtest>
+                <fileset dir="test">
+                    <include name="**/*Test.php"/>
+                </fileset>
+            </batchtest>
+        </phpunit>
     </target>
 
     <target name="clean">

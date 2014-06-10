@@ -188,13 +188,13 @@ class DocFormatter {
             $data = array_filter($data);
         }
         if ($data) {
-            if ($before = $delimiters['before']) {
+            if ($before = @$delimiters['before']) {
                 $this->buffer .= $before;
             }
             $this->buffer .= is_array($data)
                     ? implode($delimiters['inside'], $data)
                     : $data;
-            if ($after = $delimiters['after']) {
+            if ($after = @$delimiters['after']) {
                 $this->buffer .= $after;
             }
         }
@@ -206,7 +206,7 @@ class DocFormatter {
     }
 
     public function format($doc) {
-        return $this->reset()
+        return @$this->reset()
             ->append($this->formatAuthors($doc->authors), ['after' => ' '])
             ->append($doc->title)
             ->append($doc->published_in, ['before' => ' // '])

@@ -2,9 +2,9 @@
 <project name="joomla-mendeley" default="dist">
 
     <target name="dist">
-        <phing dir="library" target="dist"/>
-        <phing dir="component" target="dist"/>
-        <phing dir="plugin" target="dist"/>
+        <phing dir="library" target="dist" haltonfailure="true"/>
+        <phing dir="component" target="dist" haltonfailure="true"/>
+        <phing dir="plugin" target="dist" haltonfailure="true"/>
         <mkdir dir="target"/>
         <zip destfile="target/pkg_mendeley.zip">
             <fileset dir="." includes="pkg_mendeley.xml"/>
@@ -16,9 +16,9 @@
 
     <target name="clean">
         <delete dir="target"/>
-        <phing dir="library" target="clean"/>
-        <phing dir="component" target="clean"/>
-        <phing dir="plugin" target="clean"/>
+        <phing dir="library" target="clean" haltonfailure="true"/>
+        <phing dir="component" target="clean" haltonfailure="true"/>
+        <phing dir="plugin" target="clean" haltonfailure="true"/>
     </target>
 
 </project>
