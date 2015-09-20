@@ -8,6 +8,8 @@ Use `{mendeley}user{/mendeley}` to insert a list of user's authored documents.
 
 Support for Mendeley REST API is encapsulated in library/src/mendeley.php, which is a small reusable library independent from Joomla.
 
+> Unfortunately Mendeley changed its API soon after the plugin was written :(
+> The plugin needs to be updated to the new API in order to be functional again.
 
 ## Installation
 
